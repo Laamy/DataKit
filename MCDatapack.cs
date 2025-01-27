@@ -1,35 +1,55 @@
 ﻿using System.Reflection;
 
+public class McUtils
+{
+    public static void MoveMsg(GameFunctionEvent ctx, string area)
+        => ctx.Caller.Message(Component.Text($"You have been moved to the {area} area").Color(TextColor.GREEN));
+}
+
 // based on https://github.com/rsmeowry/CopperSharp
 [ModuleAuthor("opentk")]
-[ModuleInfo("ExampleModule",
-    Description = "A cool example module",
+[ModuleInfo("BuildWorldPack",
+    Description = "A pack im using in my build world",
     CompilePath = "C:\\Users\\yeemi\\curseforge\\minecraft\\Instances\\essentials latest\\saves\\Build World\\datapacks")
 ]
 public class MCDatapack : Module
 {
-    [MCEvent(MCEventType.WorldLoad)]
-    public void load(WorldContext ctx)
+    // TODO: fix this, no clue why this wont work
+    [Event(EventType.WorldLoad)]
+    public void load(GameFunctionEvent ctx)
     {
-        ctx.Announce(Component.Text("load function was called!").Color(TextColor.GREEN));
+        ctx.Message(Component.Text("load function was called!").Color(TextColor.GREEN));
     }
 
-    [MCEvent(MCEventType.WorldTick)]
-    public void tick(WorldContext ctx)
+    [Function]
+    public void dark_oak(GameFunctionEvent ctx)
     {
-        ctx.Announce(Component.Text("tick function was called!").Color(TextColor.GREEN));
+        McUtils.MoveMsg(ctx, "dark oak");
+
+        ctx.Raw("effect give @s minecraft:darkness 5 1 true");
+        ctx.Raw("effect give @s minecraft:darkness 1 1 true");
+        ctx.Weather(Component.Weather(Weather.Clear));
+        ctx.Caller.Teleport("-955.08 64.00 8979.23");
     }
 
-    [MCFunction]
-    public void test(WorldContext ctx)
+    [Function]
+    public void plains(GameFunctionEvent ctx)
     {
-        ctx.Announce(Component.Text("Hello world!").Color(TextColor.RED));
+        McUtils.MoveMsg(ctx, "plains");
+
+        ctx.Raw("effect give @s minecraft:darkness 5 1 true");
+        ctx.Raw("effect give @s minecraft:darkness 1 1 true");
+        ctx.Weather(Component.Weather(Weather.Clear));
+        ctx.Caller.Teleport("5775.48 69.00 -5716.71");
     }
 
-    [MCFunction]
-    public void day(WorldContext ctx)
+    [Function]
+    public void snow(GameFunctionEvent ctx)
     {
-        ctx.Announce(Component.Text("Time has been set to day!").Color(TextColor.GREEN));
-        ctx.Raw("time set day");
+        McUtils.MoveMsg(ctx, "snow");
+
+        ctx.Raw("effect give @s minecraft:blindness 2 1 true");
+        ctx.Weather(Component.Weather(Weather.Thunder));
+        ctx.Caller.Teleport("-5572.51 70.00 11383.36");
     }
 }

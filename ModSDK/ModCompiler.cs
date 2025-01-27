@@ -25,7 +25,7 @@ public class ModCompiler
     private static void ProcessModule(Type moduleType)
     {
         var functions = moduleType.GetMethods()
-            .Where(m => m.GetCustomAttributes<MCEventAttribute>().Any() || m.GetCustomAttributes<MCFunctionAttribute>().Any())
+            .Where(m => m.GetCustomAttributes<EventAttribute>().Any() || m.GetCustomAttributes<FunctionAttribute>().Any())
             .ToList();
 
         var modInfo = moduleType.GetCustomAttribute<ModuleInfoAttribute>();
@@ -46,15 +46,15 @@ public class ModCompiler
 
         foreach (var function in functions)
         {
-            if (function.GetCustomAttributes<MCEventAttribute>().Any())
+            if (function.GetCustomAttributes<EventAttribute>().Any())
             {
-                var eventAttribute = function.GetCustomAttribute<MCEventAttribute>();
+                var eventAttribute = function.GetCustomAttribute<EventAttribute>();
                 CreateEventFunctionFile(eventAttribute._event, function.Name, function);
                 Console.WriteLine("[+] Initialized MCEvent " + function.Name + " of event type " + eventAttribute._event.ToString());
             }
-            else if (function.GetCustomAttributes<MCFunctionAttribute>().Any())
+            else if (function.GetCustomAttributes<FunctionAttribute>().Any())
             {
-                var functionAttribute = function.GetCustomAttribute<MCFunctionAttribute>();
+                var functionAttribute = function.GetCustomAttribute<FunctionAttribute>();
                 CreateFunctionFile(function.Name, function);
                 Console.WriteLine("[+] Initialized MCFunction " + function.Name);
             }
@@ -63,9 +63,9 @@ public class ModCompiler
         Console.WriteLine("[+] Initialized module " + modpackName);
     }
 
-    private static void CreateEventFunctionFile(MCEventType eventType, string functionName, MethodInfo method)
+    private static void CreateEventFunctionFile(EventType eventType, string functionName, MethodInfo method)
     {
-        string eventFolder = eventType == MCEventType.WorldLoad ? "load" : "tick";
+        string eventFolder = eventType == EventType.WorldLoad ? "load" : "tick";
         string filePath = Path.Combine(datapackPath, "data", "minecraft", "tags", "functions", $"{eventFolder}.json");
 
         string jsonContent = $"{{ \"values\": [\"{modpackName}:{functionName}\"] }}";
@@ -78,16 +78,16 @@ public class ModCompiler
     {
         string filePath = Path.Combine(datapackPath, "data", modpackName, "function", $"{functionName}.mcfunction");
 
-        WorldContext ctx = new WorldContext();
+        GameFunctionEvent ctx = new GameFunctionEvent();
         ExecuteMethod(method, ctx);
 
         File.WriteAllText(filePath, ctx.GetOutput());
     }
 
-    private static void ExecuteMethod(MethodInfo method, WorldContext ctx)
+    private static void ExecuteMethod(MethodInfo method, GameFunctionEvent ctx)
     {
         var parameters = method.GetParameters();
-        if (parameters.Length == 1 && parameters[0].ParameterType == typeof(WorldContext))
+        if (parameters.Length == 1 && parameters[0].ParameterType == typeof(GameFunctionEvent))
         {
             method.Invoke(Activator.CreateInstance(method.DeclaringType), new object[] { ctx });
         }

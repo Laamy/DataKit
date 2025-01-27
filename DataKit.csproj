@@ -45,10 +45,12 @@
   <ItemGroup>
     <Compile Include="ModSDK\Component\Component.cs" />
     <Compile Include="ModSDK\Component\TextComponent.cs" />
+    <Compile Include="ModSDK\Component\TimeComponent.cs" />
+    <Compile Include="ModSDK\Component\WeatherComponent.cs" />
     <Compile Include="ModSDK\ModCompiler.cs" />
     <Compile Include="ModSDK\ReflectionAttributes.cs" />
     <Compile Include="ModSDK\TextColor.cs" />
-    <Compile Include="ModSDK\WorldContext.cs" />
+    <Compile Include="ModSDK\GameFunctionEvent.cs" />
     <Compile Include="MCDatapack.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

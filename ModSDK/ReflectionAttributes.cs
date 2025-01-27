@@ -1,6 +1,6 @@
 ﻿using System;
 
-public enum MCEventType
+public enum EventType
 {
     WorldLoad, WorldTick
 }
@@ -27,7 +27,6 @@ public class ModuleInfoAttribute : Attribute
         FunctionName = functionName;
     }
 }
-
 public class ModuleAuthorAttribute : Attribute
 {
     public string FunctionName
@@ -40,20 +39,18 @@ public class ModuleAuthorAttribute : Attribute
         FunctionName = functionName;
     }
 }
-
-public class MCEventAttribute : Attribute
+public class EventAttribute : Attribute
 {
-    public MCEventType _event
+    public EventType _event
     {
         get;
     }
 
-    public MCEventAttribute(MCEventType functionName)
+    public EventAttribute(EventType functionName)
     {
         _event = functionName;
     }
 }
-
-public class MCFunctionAttribute : Attribute
+public class FunctionAttribute : Attribute
 {
 }
