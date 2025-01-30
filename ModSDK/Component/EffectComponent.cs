@@ -71,10 +71,10 @@
             _currentEffect = initialEffect;
         }
 
-        public EffectComponent FromRaw(string values = "minecraft:speed 1")
-        {
-            return this;
-        }
+        //public EffectComponent FromRaw(string values = "minecraft:speed 1")
+        //{
+        //    return this;
+        //}
 
         public EffectComponent Set(Effect newEffect)
         {
