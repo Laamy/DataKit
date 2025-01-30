@@ -38,7 +38,8 @@ public class MCDatapack : Module
     public static void MoveMsg(GameFunctionEvent ctx, string area)
         => ctx.Caller.Message(Component.Text($"You have been moved to the {area} area", TextColor.GREEN));
 
-    //[FakeEvent(FakeEventType.RightClick)]
+    //[FakeEvent(FakeEventType.RightClick, "custom_name")]
+    //MenuUtil.Events.GiveItem(ctx, "custom_name", "minecraft:carrot_on_a_stick");
 
     [Event(EventType.WorldLoad)]
     public void load(GameFunctionEvent ctx)
@@ -48,9 +49,8 @@ public class MCDatapack : Module
         ctx.Raw("scoreboard objectives remove right_click_test");
         ctx.Raw("scoreboard objectives add right_click_test minecraft.used:minecraft.carrot_on_a_stick");
         
-        Stopwatch.Show();
         // TODO: inline option (default rn)
-        // also TODO: brand new function per lambda. for example 1minutetimer/events/timer_1minutetimer.mcfunction then call it once it passes
+        // also TODO: brand new function per lambda. for example events/timer_1minutetimer.mcfunction then call it once it passes
         // Stopwatch.Create("1minutetimer", 20 * 60, CompileType.Inline);
         Stopwatch.Create("saturation", 20*5);
         Stopwatch.Create("clearLag", 20*300);
