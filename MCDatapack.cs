@@ -19,21 +19,33 @@ public class MCDatapack : Module
     public void load(GameFunctionEvent ctx)
     {
         ctx.Message(Component.Text("Refreshing datapack", TextColor.GREEN));
-
+        
         Stopwatch.Show();
         // TODO: inline option (default rn)
         // also TODO: brand new function per lambda. for example 1minutetimer/events/timer_1minutetimer.mcfunction then call it once it passes
-        Stopwatch.Create("1minutetimer", 20 * 60);
+        // Stopwatch.Create("1minutetimer", 20 * 60, CompileType.Inline);
+        Stopwatch.Create("saturation", 20*5);
+        Stopwatch.Create("clearLag", 20*300);
+    }
+
+    // TODO: allow inling of util functions (this isn't actually functional yet)
+    [Function, ForceInline]
+    public void aninlinefunc(GameFunctionEvent ctx)
+    {
+        ctx.Message(Component.Text("This is an inlined function", TextColor.GREEN));
     }
 
     [Event(EventType.WorldTick)]
     public void tick(GameFunctionEvent ctx)
     {
-        Stopwatch.Get("1minutetimer")
+        Stopwatch.Get("saturation").IfPass(ctx, e => e.Effect("@a", Component.Effect(Effect.Saturation, 10*20, 255, true)));
+
+        // TODO: move the tick stuff on the Stopwatch.Create to this IfPass so i can do smth on lets say 20*250 ticks then 20*300
+        Stopwatch.Get("clearLag")
             .IfPass(ctx, e => {
-            e.Message(Component.Text("[DATAPACK] 1 minute has passed", TextColor.YELLOW));
-            e.Message(Component.Text("[DATAPACK] another message", TextColor.YELLOW));
-        });
+                e.Raw("kill @e[type=item]");
+                e.Message(Component.Text("[ClearLag] Cleared dropped items", TextColor.GREEN));
+            });
     }
 
     [Function]

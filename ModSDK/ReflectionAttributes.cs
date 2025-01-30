@@ -51,6 +51,5 @@ public class EventAttribute : Attribute
         _event = functionName;
     }
 }
-public class FunctionAttribute : Attribute
-{
-}
+public class FunctionAttribute : Attribute {}
+public class ForceInlineAttribute : Attribute {}

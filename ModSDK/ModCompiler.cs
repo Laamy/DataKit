@@ -5,6 +5,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
+using System.ComponentModel.Design;
 
 // temp here
 public class Stopwatch
@@ -16,20 +17,20 @@ public class Stopwatch
     public string Target;
     public uint ticks;
 
+    private Random random = new Random();
+
     /// <summary>
     /// expected to be ran on world load
     /// </summary>
-    private Stopwatch(uint ticks)
+    private Stopwatch(string name, uint ticks)
     {
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        Random random = new Random();
-
-        // might be good if i let the user specify the target
-        Target = "timer_" + new string(Enumerable.Repeat(chars, 10).Select(s => s[random.Next(s.Length)]).ToArray());
+        //const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        //Target = "timer_" + new string(Enumerable.Repeat(chars, 10).Select(s => s[random.Next(s.Length)]).ToArray());
+        Target = name;
         this.ticks = ticks;
     }
 
-    public static void Create(string name, uint ticks) => stopwatches.Add(name, new Stopwatch(ticks));
+    public static void Create(string name, uint ticks) => stopwatches.Add(name, new Stopwatch($"timer_{name}", ticks));
     public static Stopwatch Get(string name) => stopwatches[name];
 
     /// <summary>
