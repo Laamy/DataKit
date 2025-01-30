@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ModSDK\Component\Component.cs" />
+    <Compile Include="ModSDK\Component\EffectComponent.cs" />
     <Compile Include="ModSDK\Component\TextComponent.cs" />
     <Compile Include="ModSDK\Component\TimeComponent.cs" />
     <Compile Include="ModSDK\Component\WeatherComponent.cs" />
