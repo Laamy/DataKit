@@ -28,13 +28,6 @@ public class MCDatapack : Module
         Stopwatch.Create("clearLag", 20*300);
     }
 
-    // TODO: allow inling of util functions (this isn't actually functional yet)
-    [Function, ForceInline]
-    public void aninlinefunc(GameFunctionEvent ctx)
-    {
-        ctx.Message(Component.Text("This is an inlined function", TextColor.GREEN));
-    }
-
     [Event(EventType.WorldTick)]
     public void tick(GameFunctionEvent ctx)
     {
