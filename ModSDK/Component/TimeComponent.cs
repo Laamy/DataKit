@@ -1,38 +1,41 @@
-﻿public enum Time
+﻿namespace Datapack.Components
 {
-    Day, Midnight, Night, Noon
-}
-
-public class TimeComponent : Component
-{
-    private Time _currentTime;
-    private int _timeToAdd;
-    private bool _isAddMode;
-
-    public TimeComponent(Time initialTime = global::Time.Day)
+    public enum Time
     {
-        _currentTime = initialTime;
-        _isAddMode = false;
+        Day, Midnight, Night, Noon
     }
 
-    public TimeComponent Set(Time newTime)
+    public class TimeComponent : Component
     {
-        _currentTime = newTime;
-        _isAddMode = false;
-        return this;
-    }
+        private Time _currentTime;
+        private int _timeToAdd;
+        private bool _isAddMode;
 
-    public TimeComponent Add(int timeInTicks)
-    {
-        _isAddMode = true;
-        _timeToAdd = timeInTicks;
-        return this;
-    }
+        public TimeComponent(Time initialTime = Components.Time.Day)
+        {
+            _currentTime = initialTime;
+            _isAddMode = false;
+        }
 
-    public override string ToRaw()
-    {
-        if (_isAddMode)
-            return $"time add {_timeToAdd}";
-        else return $"time set {_currentTime.ToString().ToLower()}";
+        public TimeComponent Set(Time newTime)
+        {
+            _currentTime = newTime;
+            _isAddMode = false;
+            return this;
+        }
+
+        public TimeComponent Add(int timeInTicks)
+        {
+            _isAddMode = true;
+            _timeToAdd = timeInTicks;
+            return this;
+        }
+
+        public override string ToRaw()
+        {
+            if (_isAddMode)
+                return $"time add {_timeToAdd}";
+            else return $"time set {_currentTime.ToString().ToLower()}";
+        }
     }
 }

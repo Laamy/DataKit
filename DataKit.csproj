@@ -50,6 +50,7 @@
     <Compile Include="ModSDK\Component\WeatherComponent.cs" />
     <Compile Include="ModSDK\ModCompiler.cs" />
     <Compile Include="ModSDK\ReflectionAttributes.cs" />
+    <Compile Include="ModSDK\Stopwatch.cs" />
     <Compile Include="ModSDK\TextColor.cs" />
     <Compile Include="ModSDK\GameFunctionEvent.cs" />
     <Compile Include="MCDatapack.cs" />

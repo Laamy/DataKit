@@ -1,38 +1,41 @@
-﻿using System.Text;
-
-public class TextComponent : Component
+﻿namespace Datapack.Components
 {
-    public TextComponent(string text)
+    using System.Text;
+
+    public class TextComponent : Component
     {
-        _text = text;
-    }
-
-    private string _text;
-    private string _color;
-
-    internal TextComponent Color(string colorCode)
-    {
-        _color = colorCode;
-        return this;
-    }
-
-    public override string ToJSON()
-    {
-        StringBuilder json = new StringBuilder("{");
-
-        if (!string.IsNullOrEmpty(_text))
+        public TextComponent(string text)
         {
-            json.Append($"\"text\": \"{_text}\"");
+            _text = text;
         }
 
-        if (!string.IsNullOrEmpty(_color))
+        private string _text;
+        private string _color;
+
+        internal TextComponent Color(string colorCode)
         {
-            if (json.Length > 1) json.Append(", ");
-            json.Append($"\"color\": \"{_color}\"");
+            _color = colorCode;
+            return this;
         }
 
-        json.Append("}");
+        public override string ToJSON()
+        {
+            StringBuilder json = new StringBuilder("{");
 
-        return json.ToString();
+            if (!string.IsNullOrEmpty(_text))
+            {
+                json.Append($"\"text\": \"{_text}\"");
+            }
+
+            if (!string.IsNullOrEmpty(_color))
+            {
+                if (json.Length > 1) json.Append(", ");
+                json.Append($"\"color\": \"{_color}\"");
+            }
+
+            json.Append("}");
+
+            return json.ToString();
+        }
     }
 }

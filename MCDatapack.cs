@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Reflection;
 
+using Datapack;
+using Datapack.Components;
+
 public class McUtils
 {
     public static void MoveMsg(GameFunctionEvent ctx, string area)
