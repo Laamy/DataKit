@@ -1,14 +1,12 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 
 using Datapack;
 using Datapack.Components;
 using Datapack.Operators;
 
 [ModuleAuthor("opentk")]
-[ModuleInfo("BuildWorldPack",
-    Description = "A pack im using in my build world",
+[ModuleInfo("VeinMiner",
+    Description = "Test oak tree vein miner pack",
     CompilePath = "C:\\Users\\yeemi\\curseforge\\minecraft\\Instances\\essentials 1.21.4\\saves\\New World\\datapacks")]
 public class VeinMinerDatapack : Module
 {
@@ -24,10 +22,7 @@ public class VeinMinerDatapack : Module
     [Event(EventType.WorldTick)]
     public void tick(GameFunctionEvent ctx)
     {
-        // temp 2 see if this works as intended
-        // oops just realized this rapidly increases
-        // dogshitttt
-        ctx.Raw("execute as @a if score @s brokeLogs matches 1.. run execute at @e[type=item,name=\"Oak Log\",tag=!marked] run function buildworldpack:test");
+        ctx.Raw("execute as @a if score @s brokeLogs matches 1.. run execute at @e[type=item,name=\"Oak Log\",tag=!marked] run function veinminer:test");
         ctx.Raw("execute as @a if score @s brokeLogs matches 1.. run scoreboard players reset @s brokeLogs");
         ctx.Raw("execute as @e[type=item,name=\"Oak Log\"] run tag @s add marked");//oh shit
     }
