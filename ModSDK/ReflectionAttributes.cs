@@ -1,51 +1,50 @@
-﻿namespace Datapack
+﻿namespace Datapack;
+
+using System;
+
+public enum EventType
 {
-    using System;
+    WorldLoad, WorldTick
+}
 
-    public enum EventType
+public class ModuleInfoAttribute : Attribute
+{
+    public string FunctionName
     {
-        WorldLoad, WorldTick
+        get;
+    }
+    public string Description
+    {
+        get; set;
+    }
+    public string CompilePath
+    {
+        get; set;
     }
 
-    public class ModuleInfoAttribute : Attribute
+    public ModuleInfoAttribute(string functionName) => FunctionName = functionName;
+}
+public class ModuleAuthorAttribute : Attribute
+{
+    public string FunctionName
     {
-        public string FunctionName
-        {
-            get;
-        }
-        public string Description
-        {
-            get; set;
-        }
-        public string CompilePath
-        {
-            get; set;
-        }
+        get;
+    }
 
-        public ModuleInfoAttribute(string functionName) => FunctionName = functionName;
-    }
-    public class ModuleAuthorAttribute : Attribute
+    public ModuleAuthorAttribute(string functionName) => FunctionName = functionName;
+}
+public class EventAttribute : Attribute
+{
+    public EventType _event
     {
-        public string FunctionName
-        {
-            get;
-        }
+        get;
+    }
 
-        public ModuleAuthorAttribute(string functionName) => FunctionName = functionName;
-    }
-    public class EventAttribute : Attribute
-    {
-        public EventType _event
-        {
-            get;
-        }
-
-        public EventAttribute(EventType functionName) => _event = functionName;
-    }
-    public class FunctionAttribute : Attribute
-    {
-    }
-    public class ForceInlineAttribute : Attribute
-    {
-    }
+    public EventAttribute(EventType functionName) => _event = functionName;
+}
+public class FunctionAttribute : Attribute
+{
+}
+public class ForceInlineAttribute : Attribute
+{
 }

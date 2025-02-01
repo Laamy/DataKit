@@ -36,64 +36,48 @@ class GiveUtil
 [ModuleAuthor("opentk")]
 [ModuleInfo("BuildWorldPack",
     Description = "A pack im using in my build world",
-    CompilePath = "C:\\Users\\yeemi\\curseforge\\minecraft\\Instances\\essentials 1.21.4\\saves\\New World\\datapacks")]
+    CompilePath = "C:\\Users\\yeemi\\curseforge\\minecraft\\Instances\\essentials 1.21.4\\saves\\Build World\\datapacks")]
 public class MCDatapack : Module
 {
     public static void MoveMsg(GameFunctionEvent ctx, string area)
         => ctx.Message(Operator.Self, Component.Text($"You have been moved to the {area} area", TextColor.GREEN));
+
+    //[FakeEvent(FakeEventType.RightClick, "custom_name")]
+    //MenuUtil.Events.GiveItem(ctx, "custom_name", "minecraft:carrot_on_a_stick");
 
     [Event(EventType.WorldLoad)]
     public void load(GameFunctionEvent ctx)
     {
         ctx.Message(Operator.All, Component.Text("Refreshing datapack", TextColor.GREEN));
 
-        // reset the objectives the datapack uses
         ctx.Raw("scoreboard objectives remove right_click_test");
         ctx.Raw("scoreboard objectives add right_click_test minecraft.used:minecraft.carrot_on_a_stick");
-
-        ctx.Raw("scoreboard objectives remove brokeLogs");
-        ctx.Raw("scoreboard objectives add brokeLogs minecraft.mined:minecraft.oak_log");
+        
+        // TODO: inline option (default rn)
+        // also TODO: brand new function per lambda. for example events/timer_1minutetimer.mcfunction then call it once it passes
+        // Stopwatch.Create("1minutetimer", 20 * 60, CompileType.Inline);
+        Stopwatch.Create("saturation", 20*5);
+        Stopwatch.Create("clearLag", 20*300);
     }
 
     [Event(EventType.WorldTick)]
     public void tick(GameFunctionEvent ctx)
     {
-        // temp 2 see if this works as intended
-        // oops just realized this rapidly increases
-        ctx.Raw("execute as @a if score @s brokeLogs matches 1.. run execute at @e[type=item,name=\"Oak Log\",tag=!marked] run function buildworldpack:test");
-        ctx.Raw("execute as @a if score @s brokeLogs matches 1.. run scoreboard players reset @s brokeLogs");
-        ctx.Raw("execute as @e[type=item,name=\"Oak Log\"] run tag @s add marked");//oh shit
+        Stopwatch.Get("saturation").IfPass(ctx, e => e.Effect(Operator.All, Component.Effect(Effect.Saturation, 10 * 20, 255, true)));
+
+        // TODO: move the tick stuff on the Stopwatch.Create to this IfPass so i can do smth on lets say 20*250 ticks then 20*300
+        Stopwatch.Get("clearLag").IfPass(ctx, e => {
+            e.Raw("kill @e[type=item]");
+            e.Message(Operator.All, Component.Text("[ClearLag] Cleared dropped items", TextColor.GREEN));
+        });
 
         // execute if entity @a[nbt={SelectedItem:{id:"minecraft:carrot_on_a_stick",count:1,components:{"minecraft:custom_data":{test:1}}}}]
         GiveUtil.SetAndExecute(ctx, "Back", new string[] { "function buildworldpack:load_inventory", "clear @s minecraft:carrot_on_a_stick", "function buildworldpack:debug" });
         GiveUtil.SetAndExecute(ctx, "Clear Inventory", new string[] { "clear @s", "function buildworldpack:debug" });
-        GiveUtil.SetAndExecute(ctx, "Repair Map", new string[] { "function buildworldpack:repair_map" });
+        GiveUtil.SetAndExecute(ctx, "Plains", new string[] { "function buildworldpack:plains" });
+        GiveUtil.SetAndExecute(ctx, "Snowy", new string[] { "function buildworldpack:snow" });
+        GiveUtil.SetAndExecute(ctx, "Dark Oak", new string[] { "function buildworldpack:dark_oak" });
         GiveUtil.SetAndExecute(ctx, "Admin Menu", new string[] { "function buildworldpack:give_menu_items" });
-    }
-
-    [Function]
-    public void test(GameFunctionEvent ctx)
-    {
-        for (int x = -2; x < 4; x++)
-            for (int z = -2; z < 4; z++)
-                ctx.Raw($"execute if block ~{x} ~ ~{z} oak_leaves run fill ~{x} ~ ~{z} ~{x} ~1 ~{z} air destroy");
-    }
-
-    [Function]
-    public void repair_map(GameFunctionEvent ctx)
-    {
-        ctx.Raw("function buildworldpack:repair_oak_tree"); // vein miner thingy
-
-        ctx.Message(Operator.All, Component.Text("Map repaired", TextColor.GREEN));
-    }
-
-    [Function]
-    public void repair_oak_tree(GameFunctionEvent ctx)
-    {
-        ctx.Raw("fill 9 56 -5 13 61 -9 air");
-        ctx.Raw("fill 11 56 -7 11 60 -7 oak_log");
-        ctx.Raw("fill 13 58 -5 9 59 -9 oak_leaves replace air");
-        ctx.Raw("fill 10 60 -8 12 61 -6 oak_leaves replace air");
     }
 
     [Function]
@@ -103,18 +87,54 @@ public class MCDatapack : Module
     }
 
     [Function]
+    public void test(GameFunctionEvent ctx)
+    {
+        ctx.Message(Operator.All.AddDistance(3, 10),
+            Component.Text($"hello world u are within 3 to 10 blocks from the player who executed this", TextColor.DARK_PURPLE));
+    }
+
+    [Function]
     public void give_menu_items(GameFunctionEvent ctx)
     {
         ctx.Raw("function buildworldpack:save_inventory");
         GiveUtil.GiveItem(ctx, "Back", "minecraft:structure_void");
         GiveUtil.GiveItem(ctx, "Clear Inventory", "minecraft:barrier");
-        GiveUtil.GiveItem(ctx, "Repair Map", "minecraft:painting");
+        GiveUtil.GiveItem(ctx, "Snowy", "minecraft:powder_snow_bucket");
+        GiveUtil.GiveItem(ctx, "Dark Oak", "minecraft:dark_oak_sapling");
+        GiveUtil.GiveItem(ctx, "Plains", "minecraft:short_grass");
     }
 
     [Function]
     public void debug(GameFunctionEvent ctx)
     {
         GiveUtil.GiveItem(ctx, "Admin Menu", "minecraft:nether_star");
+    }
+
+    [Function]
+    public void dark_oak(GameFunctionEvent ctx)
+    {
+        MoveMsg(ctx, "dark oak");
+        ctx.Effect(Operator.Self, true, Effect.Blindness, 5, 1, true);
+        ctx.Weather(Weather.Clear);
+        ctx.Teleport("-955.08 64.00 8979.23");
+    }
+
+    [Function]
+    public void plains(GameFunctionEvent ctx)
+    {
+        MoveMsg(ctx, "plains");
+        ctx.Effect(Operator.Self, true, Effect.Blindness, 5, 1, true);
+        ctx.Weather(Weather.Clear);
+        ctx.Teleport("5775.48 69.00 -5716.71");
+    }
+
+    [Function]
+    public void snow(GameFunctionEvent ctx)
+    {
+        MoveMsg(ctx, "snow");
+        ctx.Effect(Operator.Self, true, Effect.Blindness, 2, 1, true);
+        ctx.Weather(Weather.Thunder);
+        ctx.Teleport("-5572.51 70.00 11383.36");
     }
 
     // TODO: make the mc data command into its own expansive "component"

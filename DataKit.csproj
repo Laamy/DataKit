@@ -12,6 +12,7 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -22,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,6 +33,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -49,12 +52,26 @@
     <Compile Include="ModSDK\Component\TimeComponent.cs" />
     <Compile Include="ModSDK\Component\WeatherComponent.cs" />
     <Compile Include="ModSDK\ModCompiler.cs" />
+    <Compile Include="ModSDK\Operators\AdvancementOperator.cs" />
+    <Compile Include="ModSDK\Operators\DistanceOperator.cs" />
+    <Compile Include="ModSDK\Operators\DXOperator.cs" />
+    <Compile Include="ModSDK\Operators\DYOperator.cs" />
+    <Compile Include="ModSDK\Operators\DZOperator.cs" />
+    <Compile Include="ModSDK\Operators\Operator.cs" />
+    <Compile Include="ModSDK\Operators\OperatorAction.cs" />
+    <Compile Include="ModSDK\Operators\XOperator.cs" />
+    <Compile Include="ModSDK\Operators\XRotationOperator.cs" />
+    <Compile Include="ModSDK\Operators\YOperator.cs" />
+    <Compile Include="ModSDK\Operators\YRotationOperator.cs" />
+    <Compile Include="ModSDK\Operators\ZOperator.cs" />
+    <Compile Include="ModSDK\Operators\_FloatOperator.cs" />
     <Compile Include="ModSDK\ReflectionAttributes.cs" />
     <Compile Include="ModSDK\Stopwatch.cs" />
     <Compile Include="ModSDK\TextColor.cs" />
     <Compile Include="ModSDK\GameFunctionEvent.cs" />
     <Compile Include="MCDatapack.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VeinMineDatapack.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
